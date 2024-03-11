@@ -13,3 +13,6 @@
 [submodule "wherebnb-notifications"]
 	path = wherebnb-notifications
 	url = ../wherebnb-notifications
+[submodule "wherebnb-checkin"]
+	path = wherebnb-checkin
+	url = ../wherebnb-checkin
