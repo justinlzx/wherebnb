@@ -1,0 +1,15 @@
+[submodule "wherebnb-frontend"]
+	path = wherebnb-frontend
+	url = ../wherebnb-frontend
+[submodule "wherebnb-accoms"]
+	path = wherebnb-accoms
+	url = ../wherebnb-accoms
+[submodule "wherebnb-bookings"]
+	path = wherebnb-bookings
+	url = ../wherebnb-bookings
+[submodule "wherebnb-recommendations"]
+	path = wherebnb-recommendations
+	url = ../wherebnb-recommendations
+[submodule "wherebnb-notifications"]
+	path = wherebnb-notifications
+	url = ../wherebnb-notifications
