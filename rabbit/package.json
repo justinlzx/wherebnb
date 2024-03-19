@@ -12,5 +12,8 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "pika": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
   }
 }
