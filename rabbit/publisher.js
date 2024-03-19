@@ -1,4 +1,6 @@
-const { connect } = require('amqplib');
+// const { connect } = require('amqplib');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const amqp = require('amqplib/callback_api');
 
@@ -13,15 +15,15 @@ amqp.connect('amqp://localhost:5672', (err, conn) => {
         let queueName = "notifQueue"
         let jsonMsg = {
                 emailType: "bookingConfirmation",
-                travelerEmail: ,
+                travelerEmail: process.env.TRAVELER_EMAIL,
                 travelerName: "John",
-                hostEmail: "host@gmail.com",
+                hostEmail: process.env.HOST_EMAIL,
                 hostName: "Mary",
                 bookingDates: "3 May",
                 totalPrice: "400",
         }
-        let message = "Can i send json text"
-        channel.assertQueue(queueName, {durable: false});
+        let message = JSON.stringify(jsonMsg);
+        channel.assertQueue(queueName, {durable: true});
         channel.sendToQueue(queueName, Buffer.from(message));
         console.log(" [x] Sent %s", message);
     });
