@@ -4,7 +4,7 @@ import Res from '../Res/response.js'
 export const rabbitController = async (req, res) => {
     try {
         const result = await rabbitService();
-        res.status(200).send(result);
+        return Res.successResponse(res, result);
     } catch (error) {
         return Res.errorResponse(res, error);
     }
