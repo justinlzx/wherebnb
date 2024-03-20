@@ -4,6 +4,6 @@ import {
 } from '../controller/rabbit.controller.js';
 
 
-export const notifRoutes = express.Router();
+export const rabbitRoutes = express.Router();
 
-notifRoutes.post('/', rabbitController) 
+rabbitRoutes.post('/', rabbitController) 

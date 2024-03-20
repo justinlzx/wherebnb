@@ -1,4 +1,4 @@
-import { express } from 'express';
+import express from 'express';
 import { rabbitRoutes } from './rabbit.routes.js';
 
 
