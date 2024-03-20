@@ -16,3 +16,9 @@
 [submodule "wherebnb-checkin"]
 	path = wherebnb-checkin
 	url = ../wherebnb-checkin
+[submodule "wherebnb-process-booking"]
+	path = wherebnb-process-booking
+	url = ../wherebnb-process-booking
+[submodule "wherebnb-payment"]
+	path = wherebnb-payment
+	url = https://github.com/justinlzx/wherebnb-payment
