@@ -13,15 +13,16 @@ amqp.connect('amqp://localhost:5672', (err, conn) => {
             throw err;
         }
         let queueName = "notifQueue"
-        let jsonMsg = {
-                emailType: "bookingConfirmation",
-                travelerEmail: process.env.TRAVELER_EMAIL,
-                travelerName: "John",
-                hostEmail: process.env.HOST_EMAIL,
-                hostName: "Mary",
-                bookingDates: "3 May",
-                totalPrice: "400",
-        }
+        // let jsonMsg = {
+        //         emailType: "bookingConfirmation",
+        //         travelerEmail: process.env.TRAVELER_EMAIL,
+        //         travelerName: "John",
+        //         hostEmail: process.env.HOST_EMAIL,
+        //         hostName: "Mary",
+        //         bookingDates: "3 May",
+        //         totalPrice: "400",
+
+        // }
         let message = JSON.stringify(jsonMsg);
         channel.assertQueue(queueName, {durable: true});
         channel.sendToQueue(queueName, Buffer.from(message));

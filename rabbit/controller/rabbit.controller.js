@@ -17,6 +17,9 @@ export const rabbitController = async (req, res) => {
             hostName: payload.hostName,
             bookingDates: payload.bookingDates,
             totalPrice: payload.totalPrice,
+            country: payload.country,
+            instructions: payload.instructions,
+            propertyName: payload.propertyName
         } 
 
         //rabbit connection
