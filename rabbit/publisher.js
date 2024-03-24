@@ -1,10 +1,9 @@
-// const { connect } = require('amqplib');
 const dotenv = require('dotenv');
 dotenv.config();
 
 const amqp = require('amqplib/callback_api');
 
-amqp.connect('amqp://localhost:5672', (err, conn) => {
+amqp.connect(`amqp://localhost:${process.env.PORT}`, (err, conn) => {
     if(err){
         throw err;
     }
