@@ -1,9 +1,6 @@
 import { rabbitService } from '../service/rabbit.service.js';
 import Res from '../Res/response.js'
 
-
-
-
 //gets the thing from endpoint, then sends to rabbit 
 export const rabbitController = async (req, res) => {
     try {
@@ -26,7 +23,7 @@ export const rabbitController = async (req, res) => {
         } 
 
         //rabbit connection
-        const result = await rabbitService(jsonMsg);
+        const result = rabbitService(jsonMsg);
         return Res.successResponse(res, result);
     } catch (error) {
         return Res.errorResponse(res, error);
