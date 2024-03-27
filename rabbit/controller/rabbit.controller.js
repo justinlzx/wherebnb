@@ -15,11 +15,14 @@ export const rabbitController = async (req, res) => {
             travelerName: payload.travelerName,
             hostEmail: payload.hostEmail,
             hostName: payload.hostName,
-            bookingDates: payload.bookingDates,
+            bookingStart: payload.bookingStart,
+            bookingEnd: payload.bookingEnd,
             totalPrice: payload.totalPrice,
             country: payload.country,
             instructions: payload.instructions,
-            propertyName: payload.propertyName
+            propertyName: payload.propertyName,
+            reviewRating: payload.reviewRating,
+            reviewComments: payload.reviewComments
         } 
 
         //rabbit connection

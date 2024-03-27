@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', routes)
 
 const ENV = process.env
-const NODE_PORT = ENV.NODE_PORT || 3007;
+const NODE_PORT = ENV.NODE_PORT || 3006;
 
 
 app.use(
