@@ -14,9 +14,6 @@ services:
   #   environment:
   #     - NODE_PORT=${FRONTEND_PORT}
 
-
-
-
   accoms:
     build:
       context: ./wherebnb-accoms
@@ -93,6 +90,41 @@ services:
       - REMOTE_DB_USER=${REMOTE_DB_USER}
       - REMOTE_DB_PASSWORD=${REMOTE_DB_PASSWORD}
       - REMOTE_DB_NAME=${REMOTE_DB_NAME}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - ACCOMS_URL=${ACCOMS_URL}
+      - BOOKINGS_URL=${BOOKINGS_URL}
+      - ACCOUNTS_URL=${ACCOUNTS_URL}
+      - PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
+      - PAYMENTS_URL=${PAYMENTS_URL}
+      - NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
+      - REVIEWS_URL=${REVIEWS_URL}
+      - CHECKIN_URL=${CHECKIN_URL}
+
+  process-booking: #TODO: see if this can connect via NGROK
+    build:
+      context: ./wherebnb-process-booking
+    ports:
+      - '8006:${PROCESS_BOOKING_PORT}'
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${PROCESS_BOOKING_PORT}
+      - USE_DB=${USE_DB}
+      - REMOTE_DB_TYPE=${REMOTE_DB_TYPE}
+      - REMOTE_DB_HOST=${REMOTE_DB_HOST}
+      - REMOTE_DB_PORT=${REMOTE_DB_PORT}
+      - REMOTE_DB_USER=${REMOTE_DB_USER}
+      - REMOTE_DB_PASSWORD=${REMOTE_DB_PASSWORD}
+      - REMOTE_DB_NAME=${REMOTE_DB_NAME}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - ACCOMS_URL=${ACCOMS_URL}
+      - BOOKINGS_URL=${BOOKINGS_URL}
+      - ACCOUNTS_URL=${ACCOUNTS_URL}
+      - PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
+      - PAYMENTS_URL=${PAYMENTS_URL}
+      - NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
+      - REVIEWS_URL=${REVIEWS_URL}
+      - CHECKIN_URL=${CHECKIN_URL}
 
   notifications: #TODO: verify if this is correct
     build:
