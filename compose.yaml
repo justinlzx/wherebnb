@@ -5,6 +5,18 @@ services:
   #     context: ./wherebnb-frontend
   #   ports:
   #     - '${FRONTEND_PORT}:3000'
+  #   env_file:
+  #     - .env
+  #  depends_on:
+  #     - checkin
+  #     - process-booking
+  #     - reviews
+  #   environment:
+  #     - NODE_PORT=${FRONTEND_PORT}
+
+
+
+
   accoms:
     build:
       context: ./wherebnb-accoms
@@ -90,15 +102,19 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbit
+      - rabbitmq
     environment:
       - NODE_PORT=${NOTIFICATIONS_PORT}
+      - RABBIT_PORT=${RABBIT_PORT}
+      - RABBIT_HOST=${RABBIT_HOST}
       - EMAIL_USERNAME=${EMAIL_USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-  rabbit: #TODO: verify if this is correct
+    # restart: always
+
+  rabbitmq: #TODO: verify if this is correct
     image: 'rabbitmq:3-management'
     env_file:
       - .env
     ports:
-      - '8009:${RABBIT_PORT}'
-      - '8010:${RABBIT_MANAGEMENT_PORT}'
+      - '5672:${RABBIT_PORT}'
+      - '15672:${RABBIT_MANAGEMENT_PORT}'
