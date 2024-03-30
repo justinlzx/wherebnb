@@ -1,26 +1,26 @@
-version: '1.0'
+version: '3'
 services: 
-  frontend:
-    build:
-      context: ./wherebnb-frontend
-    ports:
-      - '8000:${FRONTEND_PORT}'
-    env_file:
-      - .env
-    depends_on:
-      - checkin
-      - process-booking
-      - reviews
-    environment:
-      - REACT_APP_FRONTEND_URL=${FRONTEND_URL}
-      - REACT_APP_ACCOMS_URL=${ACCOMS_URL}
-      - REACT_APP_BOOKINGS_URL=${BOOKINGS_URL}
-      - REACT_APP_ACCOUNTS_URL=${ACCOUNTS_URL}
-      - REACT_APP_PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
-      - REACT_APP_PAYMENTS_URL=${PAYMENTS_URL}
-      - REACT_APP_NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
-      - REACT_APP_REVIEWS_URL=${REVIEWS_URL}
-      - REACT_APP_CHECKIN_URL=${CHECKIN_URL}
+  # frontend:
+  #   build:
+  #     context: ./wherebnb-frontend
+  #   ports:
+  #     - '3000:${FRONTEND_PORT}'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - checkin
+  #     - process-booking
+  #     - reviews
+  #   environment:
+  #     - REACT_APP_FRONTEND_URL=${KONG_URL}
+  #     - REACT_APP_ACCOMS_URL=${KONG_URL}
+  #     - REACT_APP_BOOKINGS_URL=${KONG_URL}
+  #     - REACT_APP_ACCOUNTS_URL=${KONG_URL}
+  #     - REACT_APP_PROCESS_BOOKING_URL=${KONG_URL}
+  #     - REACT_APP_PAYMENTS_URL=${KONG_URL}
+  #     - REACT_APP_NOTIFICATIONS_URL=${KONG_URL}
+  #     - REACT_APP_REVIEWS_URL=${KONG_URL}
+  #     - REACT_APP_CHECKIN_URL=${KONG_URL}
 
   accoms:
     build:
@@ -81,8 +81,8 @@ services:
   reviews:
     build:
       context: ./wherebnb-reviews
-    ports:
-      - '8004:${REVIEWS_PORT}'
+    # ports:
+    #   - '8004:${REVIEWS_PORT}'
     env_file:
       - .env
     environment:
@@ -107,19 +107,13 @@ services:
   process-booking: #TODO: see if this can connect via NGROK
     build:
       context: ./wherebnb-process-booking
-    ports:
-      - '8006:${PROCESS_BOOKING_PORT}'
+    # ports:
+    #   - '8006:${PROCESS_BOOKING_PORT}'
     env_file:
       - .env
     environment:
       - NODE_PORT=${PROCESS_BOOKING_PORT}
       - USE_DB=${USE_DB}
-      - REMOTE_DB_TYPE=${REMOTE_DB_TYPE}
-      - REMOTE_DB_HOST=${REMOTE_DB_HOST}
-      - REMOTE_DB_PORT=${REMOTE_DB_PORT}
-      - REMOTE_DB_USER=${REMOTE_DB_USER}
-      - REMOTE_DB_PASSWORD=${REMOTE_DB_PASSWORD}
-      - REMOTE_DB_NAME=${REMOTE_DB_NAME}
       - FRONTEND_URL=${FRONTEND_URL}
       - ACCOMS_URL=${ACCOMS_URL}
       - BOOKINGS_URL=${BOOKINGS_URL}
@@ -133,8 +127,8 @@ services:
   notifications: #TODO: verify if this is correct
     build:
       context: ./wherebnb-notifications
-    ports:
-      - '8005:${NOTIFICATIONS_PORT}'
+    # ports:
+    #   - '8005:${NOTIFICATIONS_PORT}'
     env_file:
       - .env
     depends_on:
@@ -151,11 +145,47 @@ services:
     image: 'rabbitmq:3-management'
     env_file:
       - .env
-    ports:
-      - '5672:${RABBIT_PORT}'
-      - '15672:${RABBIT_MANAGEMENT_PORT}'
+    # ports:
+    #   - '5672:${RABBIT_PORT}'
+    #   - '15672:${RABBIT_MANAGEMENT_PORT}'
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  kong:
+    image: kong # tested 20231101
+    # build: 
+    #   context: ./kong
+
+    platform: linux/amd64  # <- required for Mac M1 chip. Otherwise, can remove
+    # restart: always
+    # networks:
+    #   - kong-net
+    volumes:
+      - ./kong:/usr/local/kong/declarative
+    environment:
+      KONG_DATABASE: off
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yaml 
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+    # depends_on:
+    #   - kong-migration
+    ports: # https://docs.konghq.com/gateway/latest/production/networking/default-ports/
+      - "8000:${GATEWAY_PORT}" # Takes incoming HTTP traffic from Consumers, and forwards it to upstream Services.
+      - "8001:8001" # Admin API. Listens for calls from the command line over HTTP.
+      - "8002:8002" # Kong Manager (GUI). Listens for HTTP traffic.
+
+
 volumes:
+  pgdata: 
   rabbitmq_data:
+
+networks:
+  kong-net:
+    driver: bridge
+    name: kong-net
+
+
