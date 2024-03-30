@@ -1,26 +1,32 @@
-version: '1'
+version: '1.0'
 services: 
-  # frontend:
-  #   build:
-  #     context: ./wherebnb-frontend
-  #   ports:
-  #     - '${FRONTEND_PORT}:3000'
-  #   env_file:
-  #     - .env
-  #  depends_on:
-  #     - checkin
-  #     - process-booking
-  #     - reviews
-  #   environment:
-  #     - NODE_PORT=${FRONTEND_PORT}
+  frontend:
+    build:
+      context: ./wherebnb-frontend
+    ports:
+      - '8000:${FRONTEND_PORT}'
+    env_file:
+      - .env
+    depends_on:
+      - checkin
+      - process-booking
+      - reviews
+    environment:
+      - REACT_APP_FRONTEND_URL=${FRONTEND_URL}
+      - REACT_APP_ACCOMS_URL=${ACCOMS_URL}
+      - REACT_APP_BOOKINGS_URL=${BOOKINGS_URL}
+      - REACT_APP_ACCOUNTS_URL=${ACCOUNTS_URL}
+      - REACT_APP_PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
+      - REACT_APP_PAYMENTS_URL=${PAYMENTS_URL}
+      - REACT_APP_NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
+      - REACT_APP_REVIEWS_URL=${REVIEWS_URL}
+      - REACT_APP_CHECKIN_URL=${CHECKIN_URL}
 
   accoms:
     build:
       context: ./wherebnb-accoms
     env_file:
       - .env
-    ports:
-      - '8001:${ACCOMS_PORT}'
     environment:
       - NODE_PORT=${ACCOMS_PORT}
       - USE_DB=${USE_DB}
@@ -34,8 +40,6 @@ services:
   bookings:
     build:
       context: ./wherebnb-bookings
-    ports:
-      - '8002:${BOOKINGS_PORT}'
     env_file:
       - .env
     environment:
@@ -150,3 +154,8 @@ services:
     ports:
       - '5672:${RABBIT_PORT}'
       - '15672:${RABBIT_MANAGEMENT_PORT}'
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq_data:
