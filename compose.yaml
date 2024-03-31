@@ -104,7 +104,7 @@ services:
     networks:
       - kong-net
 
-  checkin:
+  checkin: #WORKS
     build:
       context: ./wherebnb-checkin
     env_file:
@@ -147,6 +147,7 @@ services:
     env_file:
       - .env
     environment:
+      - RABBIT_PORT=${RABBIT_PORT}
       - RABBIT_HOST=${RABBIT_HOST}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
@@ -156,8 +157,6 @@ services:
 
   rabbitmq: #TODO: verify if this is correct
     image: 'rabbitmq:3-management'
-    # build:
-    #   context: ./rabbit
     env_file:
       - .env
     volumes:
@@ -167,7 +166,7 @@ services:
     restart: always
 
   kong:
-    image: kong # tested 20231101
+    image: kong 
     platform: linux/amd64  # <- required for Mac M1 chip. Otherwise, can remove
     restart: always
     volumes:

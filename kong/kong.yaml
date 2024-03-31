@@ -31,7 +31,7 @@ services:
   - name: reviews
     url: http://reviews:3007
     routes:
-      - name: review
+      - name: reviews
         paths:
           - "/reviews"
   - name: check-in
