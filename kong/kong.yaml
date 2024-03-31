@@ -22,8 +22,7 @@ plugins:
       max_age: 3600
 services:
   - name: rabbit
-    host: rabbit
-    port: 3006
+    url: http://rabbit:3006
     protocol: http
     routes:
       - name: send-notification
