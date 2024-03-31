@@ -64,9 +64,10 @@ services:
       - name: process-booking
         paths:
           - "/process-booking"
+
   - name: payments
-    url: http://payment:3005
+    url: http://payments:3005
     routes:
       - name: make-payment
         paths:
-          - "/pay"
+          - "/payment"

@@ -67,6 +67,7 @@ services:
     restart: on-failure
     networks:
       - kong-net
+
   accounts:
     build:
       context: ./wherebnb-accounts
@@ -76,7 +77,7 @@ services:
       - NODE_PORT=${ACCOUNTS_PORT}
       - PASSWORD=${REMOTE_DB_PASSWORD}
       - PUBLIC_IP_ADDRESS=${REMOTE_DB_HOST}
-      - DB_NAME=${ACCOUNT_DBNAME}
+      - DBNAME=${ACCOUNT_DBNAME}
       - PROJECT_ID=${PROJECT_ID}
       - INSTANCE_NAME=${INSTANCE_NAME}
     restart: on-failure
@@ -90,7 +91,6 @@ services:
       - .env
     environment:
       - NODE_PORT=${PROCESS_BOOKING_PORT}
-      - USE_DB=${USE_DB}
       - FRONTEND_URL=${FRONTEND_URL}
       - ACCOMS_URL=${ACCOMS_URL}
       - BOOKINGS_URL=${BOOKINGS_URL}
@@ -100,6 +100,19 @@ services:
       - NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
       - REVIEWS_URL=${REVIEWS_URL}
       - CHECKIN_URL=${CHECKIN_URL}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  payments:
+    build:
+      context: ./wherebnb-payment
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${PAYMENTS_PORT}
+      - PAYMENT_URL=${PAYMENTS_URL}
+      - SECRET_KEY=${STRIPE_SECRET_KEY}
     restart: on-failure
     networks:
       - kong-net
