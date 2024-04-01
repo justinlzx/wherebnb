@@ -206,7 +206,12 @@ services:
       - kong-net
 
 volumes:
-  rabbitmq_data: {}
+  rabbitmq_data: 
+    driver: local
+    driver_opts:
+      type: none
+      device: ${RABBIT_VOL_PATH}
+      o: bind
 
 
 
