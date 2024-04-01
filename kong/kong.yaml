@@ -1,5 +1,13 @@
-_format_version: "1.1"
+_format_version: "2.1"
+
 plugins:
+  - name: key-auth
+    protocols:
+      - http
+    config:
+      key_in_header: true
+      key_names:
+        - apiKey
   - name: cors
     config:
       origins:
@@ -20,6 +28,7 @@ plugins:
         - X-Auth-Token
       credentials: true
       max_age: 3600
+
 services:
   - name: rabbit
     url: http://rabbit:3006
@@ -71,3 +80,8 @@ services:
       - name: make-payment
         paths:
           - "/payment"
+
+consumers:
+  - username: accounts
+    keyauth_credentials:
+      - key: uIW1wNy1o566NkjQkPBLffQW5gyUiPGWf8f1jueQhAgFMijpeUMX97edbb5JUayUn1TCaN2Mg7Zp8r0jVmD32HwefVTETuIJmaniJR9fJs3z7WXVepoPmhXUNxR4ur7l
