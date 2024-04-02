@@ -1,19 +1,15 @@
 class Res {
     successResponse = (res, data) => {
       return res.json({
-        success: true,
+        message: "Your email data has been successfully processed",
+        status: "success",
         data,
       });
     };
     errorResponse = (res, data) => {
       return res.status(400).json({
-        success: false,
-        data,
-      });
-    };
-    internalServerErrorResponse = (res, data) => {
-      return res.status(500).json({
-        success: false,
+        message: "There was a problem sending your data to rabbit-manager",
+        status: "fail",
         data,
       });
     };
