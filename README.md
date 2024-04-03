@@ -11,9 +11,14 @@ To run this application, follow these steps:
   ```sh
     git submodule update --remote --merge
   ```
-  To clone all submodules locally
+  To clone all submodules locally. These folders will be empty and need to be updated.
   ```sh
     git clone --recurse-submodules https://github.com/justinlzx/wherebnb /path/to/your/directory
+  ```
+  To update the submdules:
+  ```sh
+    git submodule init
+    git submodule update
   ```
   To allow the stripe webhook to work, tunnelling is required. The port can be any available port, in our case we use port 8000. The URL provided by ngrok must be use to create a webhook in Stripe as well.
     
