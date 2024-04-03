@@ -3,7 +3,7 @@ plugins:
   - name: cors
     config:
       origins:
-        - http://mockbin.com
+        - http://localhost:3000
       methods:
         - GET
         - HEAD
@@ -16,6 +16,8 @@ plugins:
         - "Content-Type"
         - "Accept"
         - "Access-Control-Allow-Origin"
+        - "Access-Control-Allow-Headers"
+        - "Authorization"
       exposed_headers:
         - X-Auth-Token
       credentials: true
