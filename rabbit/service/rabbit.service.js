@@ -1,7 +1,7 @@
 import amqp from 'amqplib/callback_api.js';
 
 export function rabbitService(jsonMsg){
-    amqp.connect('amqp://localhost:5672', (err, conn) => {
+    amqp.connect(`amqp://${process.env.RABBIT_HOST}:${process.env.RABBIT_PORT}`, (err, conn) => {
     if(err){
         throw err;
     }

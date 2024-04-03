@@ -22,3 +22,6 @@
 [submodule "wherebnb-payment"]
 	path = wherebnb-payment
 	url = https://github.com/justinlzx/wherebnb-payment
+[submodule "wherebnb-accounts"]
+	path = wherebnb-accounts
+	url = https://github.com/justinlzx/wherebnb-accounts

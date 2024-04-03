@@ -1,0 +1,87 @@
+_format_version: "2.1"
+
+plugins:
+  - name: key-auth
+    protocols:
+      - http
+    config:
+      key_in_header: true
+      key_names:
+        - apiKey
+  - name: cors
+    config:
+      origins:
+        - http://mockbin.com
+      methods:
+        - GET
+        - HEAD
+        - PUT
+        - PATCH
+        - POST
+        - DELETE
+      headers:
+        - "Origin"
+        - "Content-Type"
+        - "Accept"
+        - "Access-Control-Allow-Origin"
+      exposed_headers:
+        - X-Auth-Token
+      credentials: true
+      max_age: 3600
+
+services:
+  - name: rabbit
+    url: http://rabbit:3006
+    protocol: http
+    routes:
+      - name: send-notification
+        paths:
+          - "/send-notification"
+  - name: reviews
+    url: http://reviews:3007
+    routes:
+      - name: reviews
+        paths:
+          - "/reviews"
+  - name: check-in
+    url: http://checkin:3008
+    routes:
+      - name: check-in
+        paths:
+          - "/check-in"
+  - name: accoms
+    url: http://accoms:3001
+    routes:
+      - name: accoms
+        paths:
+          - /accoms
+  - name: bookings
+    url: http://bookings:3002
+    routes:
+      - name: booking
+        paths:
+          - "/bookings"
+  - name: accounts
+    url: http://accounts:3003
+    routes:
+      - name: account-info
+        paths:
+          - "/accounts"
+  - name: process-booking
+    url: http://process-booking:3004
+    routes:
+      - name: process-booking
+        paths:
+          - "/process-booking"
+
+  - name: payments
+    url: http://payments:3005
+    routes:
+      - name: make-payment
+        paths:
+          - "/payment"
+
+consumers:
+  - username: accounts
+    keyauth_credentials:
+      - key: uIW1wNy1o566NkjQkPBLffQW5gyUiPGWf8f1jueQhAgFMijpeUMX97edbb5JUayUn1TCaN2Mg7Zp8r0jVmD32HwefVTETuIJmaniJR9fJs3z7WXVepoPmhXUNxR4ur7l

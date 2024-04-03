@@ -1,0 +1,213 @@
+version: '3'
+
+networks:
+  kong-net:
+    driver: bridge
+
+services: 
+  accoms:
+    build:
+      context: ./wherebnb-accoms
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${ACCOMS_PORT}
+      - USE_DB=${USE_DB}
+      - REMOTE_DB_TYPE=${REMOTE_DB_TYPE}
+      - REMOTE_DB_HOST=${REMOTE_DB_HOST}
+      - REMOTE_DB_PORT=${REMOTE_DB_PORT}
+      - REMOTE_DB_USER=${REMOTE_DB_USER}
+      - REMOTE_DB_PASSWORD=${REMOTE_DB_PASSWORD}
+      - REMOTE_DB_NAME=${REMOTE_DB_NAME}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  bookings:
+    build:
+      context: ./wherebnb-bookings
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${BOOKINGS_PORT}
+      - USE_DB=${USE_DB}
+      - REMOTE_DB_TYPE=${REMOTE_DB_TYPE}
+      - REMOTE_DB_HOST=${REMOTE_DB_HOST}
+      - REMOTE_DB_PORT=${REMOTE_DB_PORT}
+      - REMOTE_DB_USER=${REMOTE_DB_USER}
+      - REMOTE_DB_PASSWORD=${REMOTE_DB_PASSWORD}
+      - REMOTE_DB_NAME=${REMOTE_DB_NAME}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  reviews:
+    build:
+      context: ./wherebnb-reviews
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${REVIEWS_PORT}
+      - USE_DB=${USE_DB}
+      - REMOTE_DB_TYPE=${REMOTE_DB_TYPE}
+      - REMOTE_DB_HOST=${REMOTE_DB_HOST}
+      - REMOTE_DB_PORT=${REMOTE_DB_PORT}
+      - REMOTE_DB_USER=${REMOTE_DB_USER}
+      - REMOTE_DB_PASSWORD=${REMOTE_DB_PASSWORD}
+      - REMOTE_DB_NAME=${REMOTE_DB_NAME}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - ACCOMS_URL=${ACCOMS_URL}
+      - BOOKINGS_URL=${BOOKINGS_URL}
+      - ACCOUNTS_URL=${ACCOUNTS_URL}
+      - PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
+      - PAYMENTS_URL=${PAYMENTS_URL}
+      - NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
+      - REVIEWS_URL=${REVIEWS_URL}
+      - CHECKIN_URL=${CHECKIN_URL}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  accounts:
+    build:
+      context: ./wherebnb-accounts
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${ACCOUNTS_PORT}
+      - PASSWORD=${REMOTE_DB_PASSWORD}
+      - PUBLIC_IP_ADDRESS=${REMOTE_DB_HOST}
+      - DBNAME=${ACCOUNT_DBNAME}
+      - PROJECT_ID=${PROJECT_ID}
+      - INSTANCE_NAME=${INSTANCE_NAME}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  process-booking: 
+    build:
+      context: ./wherebnb-process-booking
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${PROCESS_BOOKING_PORT}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - ACCOMS_URL=${ACCOMS_URL}
+      - BOOKINGS_URL=${BOOKINGS_URL}
+      - ACCOUNTS_URL=${ACCOUNTS_URL}
+      - PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
+      - PAYMENTS_URL=${PAYMENTS_URL}
+      - NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
+      - REVIEWS_URL=${REVIEWS_URL}
+      - CHECKIN_URL=${CHECKIN_URL}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  payments:
+    build:
+      context: ./wherebnb-payment
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${PAYMENTS_PORT}
+      - PAYMENT_URL=${PAYMENTS_URL}
+      - SECRET_KEY=${STRIPE_SECRET_KEY}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  checkin: 
+    build:
+      context: ./wherebnb-checkin
+    env_file:
+      - .env
+    environment:
+      - NODE_PORT=${CHECKIN_PORT}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - ACCOMS_URL=${ACCOMS_URL}
+      - BOOKINGS_URL=${BOOKINGS_URL}
+      - ACCOUNTS_URL=${ACCOUNTS_URL}
+      - PROCESS_BOOKING_URL=${PROCESS_BOOKING_URL}
+      - PAYMENTS_URL=${PAYMENTS_URL}
+      - NOTIFICATIONS_URL=${NOTIFICATIONS_URL}
+      - REVIEWS_URL=${REVIEWS_URL}
+      - CHECKIN_URL=${CHECKIN_URL}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  notifications: 
+    build:
+      context: ./wherebnb-notifications
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    environment:
+      - NODE_PORT=${NOTIFICATIONS_PORT}
+      - RABBIT_PORT=${RABBIT_PORT}
+      - RABBIT_HOST=${RABBIT_HOST}
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    restart: on-failure
+    networks:
+      - kong-net
+
+  rabbit:
+    build:
+      context: ./rabbit
+    env_file:
+      - .env
+    environment:
+      - RABBIT_PORT=${RABBIT_PORT}
+      - RABBIT_HOST=${RABBIT_HOST}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - kong-net
+    restart: always
+
+  rabbitmq: #TODO: verify if this is correct
+    image: 'rabbitmq:3-management'
+    env_file:
+      - .env
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - kong-net
+    restart: always
+
+  kong:
+    # image: kong 
+    build:
+      context: ./kong
+    platform: linux/amd64  # <- required for Mac M1 chip. Otherwise, can remove
+    restart: always
+    volumes:
+      - ./kong:/usr/local/kong/declarative
+    env_file:
+      - .env
+    environment:
+      - AUTH_KEY=${AUTH_KEY}
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yaml 
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001
+      - KONG_ADMIN_GUI_URL=http://localhost:8002
+    ports: # https://docs.konghq.com/gateway/latest/production/networking/default-ports/
+      - "8000:${GATEWAY_PORT}" # Takes incoming HTTP traffic from Consumers, and forwards it to upstream Services.
+      - "8001:8001" # Admin API. Listens for calls from the command line over HTTP.
+      - "8002:8002" # Kong Manager (GUI). Listens for HTTP traffic.
+    networks:
+      - kong-net
+
+volumes:
+  rabbitmq_data: {}
+
+
+
+
