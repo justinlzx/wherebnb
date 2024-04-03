@@ -1,27 +1,27 @@
 [submodule "wherebnb-frontend"]
 	path = wherebnb-frontend
-	url = ../wherebnb-frontend
+	url = https://github.com/justinlzx/wherebnb-frontend
 [submodule "wherebnb-accoms"]
 	path = wherebnb-accoms
-	url = ../wherebnb-accoms
+	url = https://github.com/justinlzx/wherebnb-accoms
 [submodule "wherebnb-bookings"]
 	path = wherebnb-bookings
-	url = ../wherebnb-bookings
-[submodule "wherebnb-recommendations"]
-	path = wherebnb-recommendations
-	url = ../wherebnb-recommendations
+	url = https://github.com/justinlzx/wherebnb-bookings
+[submodule "wherebnb-reviews"]
+	path = wherebnb-reviews
+	url = https://github.com/justinlzx/wherebnb-reviews
 [submodule "wherebnb-notifications"]
 	path = wherebnb-notifications
-	url = ../wherebnb-notifications
+	url = https://github.com/justinlzx/wherebnb-notifications
 [submodule "wherebnb-checkin"]
 	path = wherebnb-checkin
-	url = ../wherebnb-checkin
+	url = https://github.com/justinlzx/wherebnb-checkin
 [submodule "wherebnb-process-booking"]
 	path = wherebnb-process-booking
-	url = ../wherebnb-process-booking
+	url = https://github.com/justinlzx/wherebnb-process-booking
 [submodule "wherebnb-payment"]
 	path = wherebnb-payment
-	url = https://github.com/justinlzx/wherebnb-payment
+	url = https://github.com/dayment/wherebnb-payment/
 [submodule "wherebnb-accounts"]
 	path = wherebnb-accounts
 	url = https://github.com/justinlzx/wherebnb-accounts
