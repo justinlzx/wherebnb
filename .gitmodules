@@ -1,27 +1,36 @@
 [submodule "wherebnb-frontend"]
 	path = wherebnb-frontend
 	url = https://github.com/justinlzx/wherebnb-frontend
+	branch = main
 [submodule "wherebnb-accoms"]
 	path = wherebnb-accoms
 	url = https://github.com/justinlzx/wherebnb-accoms
+	branch = main
 [submodule "wherebnb-bookings"]
 	path = wherebnb-bookings
 	url = https://github.com/justinlzx/wherebnb-bookings
+	branch = main
 [submodule "wherebnb-reviews"]
 	path = wherebnb-reviews
 	url = https://github.com/justinlzx/wherebnb-reviews
+	branch = main
 [submodule "wherebnb-notifications"]
 	path = wherebnb-notifications
 	url = https://github.com/justinlzx/wherebnb-notifications
+	branch = main
 [submodule "wherebnb-checkin"]
 	path = wherebnb-checkin
 	url = https://github.com/justinlzx/wherebnb-checkin
+	branch = main
 [submodule "wherebnb-process-booking"]
 	path = wherebnb-process-booking
 	url = https://github.com/justinlzx/wherebnb-process-booking
+	branch = main
 [submodule "wherebnb-payment"]
 	path = wherebnb-payment
 	url = https://github.com/dayment/wherebnb-payment/
+	branch = main
 [submodule "wherebnb-accounts"]
 	path = wherebnb-accounts
 	url = https://github.com/justinlzx/wherebnb-accounts
+	branch = main
